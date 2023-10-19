@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>瑞幸咖啡标签制作（小姜专用）</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-plus@2.4.1/dist/index.css" />
+  <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/element-plus@2.4.1/dist/index.full.js"></script>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    #app {
+      max-width: 320px;
+      margin: 10px auto;
+    }
+
+    .cup-interval {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #909399;
+    }
+
+    .m5-0 {
+      margin: 5px 0;
+    }
+
+    .m20-0 {
+      margin: 10px 0;
+    }
+
+    .size-14 {
+      font-size: 14px;
+    }
+
+    .wrap {
+      position: relative;
+      width: 320px;
+      border-radius: 6px;
+      background-color: rgba(168, 211, 253, 1);
+      margin: 10px 0;
+      padding: 5px 20px 10px;
+      box-sizing: border-box;
+      font-size: 18px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: url('data:image/png;base64,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') no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .number {
+      font-size: 36px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .time {
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .export {
+      width: 100%;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-cloak>
+    <el-input v-model="name" class="m5-0" placeholder="您的姓名" style="width: 280px">
+      <template #prepend>Hi，</template>
+      <template #append>
+        <el-select v-model="sex" style="width: 100px">
+          <el-option v-for="item, index in sexOptions" :key="index" :label="item" :value="item" />
+        </el-select>
+      </template>
+    </el-input>
+    <el-input v-model="number" type="number" placeholder="取餐号" class="m5-0" style="width: 300px">
+      <template #append>
+        <el-select v-model="way" style="width: 100px">
+          <el-option v-for="item, index in wayOptions" :key="index" :label="item" :value="item" />
+        </el-select>
+      </template>
+    </el-input>
+    <el-row>
+      <el-col :span="11">
+        <el-input v-model="cupStart" type="number" placeholder="1" class="m5-0">
+          <template #prepend>第</template>
+        </el-input>
+      </el-col>
+      <el-col :span="2" class="cup-interval">/</el-col>
+      <el-col :span="11">
+        <el-input v-model="cupEnd" type="number" placeholder="1" class="m5-0">
+          <template #append>杯</template>
+        </el-input>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
+        <el-input v-model="coffee" placeholder="商品" class="m5-0">
+          <template #prepend>
+            <el-select v-model="temperature" style="width: 100px">
+              <el-option v-for="item, index in temperatureOptions" :key="index" :label="item" :value="item" />
+            </el-select>
+          </template>
+        </el-input>
+      </el-col>
+    </el-row>
+    <el-select v-model="brix" class="m5-0" style="width: 100%">
+      <el-option v-for="item, index in brixOptions" :key="index" :label="item" :value="item" />
+    </el-select>
+    <el-date-picker v-model="time" type="datetime" format="YYYY-MM-DD HH:mm" value-format="YYYY-MM-DD HH:mm"
+      placeholder="下单时间" class="m5-0" style="width: 100%">
+    </el-date-picker>
+    <el-input v-model="advise" placeholder="备注" class="m5-0" style="width: 100%"></el-input>
+
+    <h4 class="m20-0">预览</h4>
+
+    <div class="wrap" ref="wrap">
+      <div>Hi，{{name || 'x**'}} {{sex}}</div>
+      <div style="margin-top: 5px">
+        <span class="number">{{number || 100}}</span>
+        <span>{{way}} 第{{cupStart || 1}}/{{cupEnd || 1}}杯</span>
+      </div>
+      <div>【{{temperature}}】 {{coffee || '生椰拿铁'}}</div>
+      <div>{{brix}}</div>
+      <div class="time">{{time || '0000-00-00 00:00'}}</div>
+      <div class="size-14">{{advise || '建议尽快享用，风味更佳'}}</div>
+      <div class="logo"></div>
+    </div>
+
+    <el-button type="success" class="export" @click="generateImage">生成图片</el-button>
+  </div>
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+    const { createApp, ref } = Vue
+
+    const app = createApp({
+      setup() {
+        const name = ref('')
+        const sex = ref('女士')
+        const sexOptions = ['女士', '先生']
+        const number = ref()
+        const way = ref('自提')
+        const wayOptions = ['自提', '堂食', '外送']
+        const cupStart = ref()
+        const cupEnd = ref()
+        const coffee = ref('')
+        const temperature = ref('冰')
+        const temperatureOptions = ['冰', '热']
+        const brix = ref('不另外加糖')
+        const brixOptions = ['不另外加糖', '半糖', '标准糖']
+        const time = ref('')
+        const advise = ref('建议尽快享用，风味更佳')
+
+        const wrap = ref()
+        const generateImage = () => {
+          html2canvas(wrap.value, {
+            backgroundColor: null
+          }).then(canvas => {
+            let url = canvas.toDataURL('image/png')
+            let base64 = url.toString()
+            let byteCharacters = atob(
+              base64.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')
+            )
+            let byteNumbers = new Array(byteCharacters.length)
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i)
+            }
+            let byteArray = new Uint8Array(byteNumbers)
+            let blob = new Blob([byteArray], {
+              type: 'image/png',
+            })
+            let aLink = document.createElement('a')
+            aLink.download = `luckin_coffee_${new Date().getTime()}`
+            aLink.href = URL.createObjectURL(blob)
+            aLink.click()
+
+            ElementPlus.ElMessage({
+              type: 'success',
+              message: '生成成功',
+            })
+          })
+        }
+        return {
+          name,
+          sex,
+          sexOptions,
+          number,
+          way,
+          wayOptions,
+          cupStart,
+          cupEnd,
+          coffee,
+          temperature,
+          temperatureOptions,
+          brix,
+          brixOptions,
+          time,
+          advise,
+
+          wrap,
+          generateImage
+        }
+      }
+    })
+    app.use(ElementPlus)
+    app.mount('#app')
+  </script>
+</body>
+
+</html>
